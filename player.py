@@ -1,11 +1,13 @@
 import pygame
 import circleshape
 from constants import *
+from shot import Shot
 
 class Player(circleshape.CircleShape):
     def __init__(self, x, y):
         super().__init__(x, y, PLAYER_RADIUS)
-        self.rotation = 0 #The rotation field
+        self.rotation = 0 # The rotation field
+        self.shoot_timer = 0 # Used to limit the rate of fire
     
     # Defining the player triangle and its position/rotation
     def triangle(self):
@@ -35,8 +37,28 @@ class Player(circleshape.CircleShape):
             self.move(dt)
         if keys[pygame.K_s]:    # Move down
             self.move(-dt)
+        if keys[pygame.K_SPACE]:  # Shoot when spacebar is pressed
+            self.shoot()
+        
+        if self.shoot_timer > 0:
+            self.shoot_timer -= dt
+    
 
     # Moves the player forward
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         self.position += forward * PLAYER_SPEED * dt
+
+    # Defines how the player shoots
+    def shoot(self):
+        if self.shoot_timer > 0:                                                            # Limits rate of fire
+            return  # Don't shoot if on cooldown
+        shot = Shot(self.position.x, self.position.y)                                       # Create a new shot at the player's position
+        shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED     # Create a velocity vector pointing upward
+        self.shoot_timer = PLAYER_SHOOT_COOLDOWN
+
+        
+        
+        
+        
+       
