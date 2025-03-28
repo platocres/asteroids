@@ -1,3 +1,5 @@
+#If you're reading this, you're either a nerd or you're trying to confirm that I (Brandon Jones) wrote this code. Either way, welcome.
+
 # this allows us to use code from
 # the open-source pygame library
 # throughout this file
@@ -30,25 +32,31 @@ def main():
 
     
 
-    # Create the player
+    # Creates the player
     player = Player(x=SCREEN_WIDTH / 2, y=SCREEN_HEIGHT / 2)
 
-    running = True
+    running = True                              # A loop used to enter, run, and exit the game
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        # proper order of operations (fill screen → update → draw → flip display)    
-        screen.fill((0, 0, 0))      # Fills the screen with black
+            
+        screen.fill((0, 0, 0))                  # Fills the screen with black
 
-        updatable.update(dt)        # Calls the updatable objects, enables player rotation, must initialize prior the drawing the character
+        updatable.update(dt)                    # Calls the updatable objects, enables player rotation, must initialize prior the drawing the character
 
-        for obj in drawable:        # Calls the drawable objects, draws the triangle player, needs to happen after filling the screen but prior to flipping it.
+        for asteroid in asteroids:              # Checks for collisions between player and asteroids
+            if player.collisions(asteroid):     # Calls the collisions method in the CircleShape class
+                print("Game over!")
+                import sys
+                sys.exit()                      # Exit the program immediately
+
+        for obj in drawable:                    # Calls the drawable objects, draws the triangle player, needs to happen after filling the screen but prior to flipping it.
             obj.draw(screen)
 
-        pygame.display.flip()       # Updates the screen with what we've drawn
-        dt = clock.tick(60) / 1000  # Calculate delta time, in seconds, and set framerate to 60 FPS
+        pygame.display.flip()                   # Updates the screen with what we've drawn
+        dt = clock.tick(60) / 1000              # Calculate delta time, in seconds, and set framerate to 60 FPS
     
     #Clean up
     pygame.quit()
