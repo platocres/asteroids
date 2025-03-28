@@ -14,39 +14,38 @@ def main():
     pygame.init()                                                   # Initialize Pygame
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # Create the screen
     clock = pygame.time.Clock()                                     # Create a Clock instance outside the loop
-    
+    dt = 0                                                          # Delta time initialized to 0
 
+    # Pygame Object Groups
     updatable = pygame.sprite.Group()                               # Updatable objects group
     drawable = pygame.sprite.Group()                                # Drawable objects group
     asteroids = pygame.sprite.Group()                               # Asteroid objects group
     shots = pygame.sprite.Group()                                   # Shooting objects group
 
+    # Sprite Containers
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = updatable
     asteroid_field = AsteroidField()
     Player.containers = (updatable, drawable)
     Shot.containers = (shots, updatable, drawable)
 
-    dt = 0                                                          # Delta time initialized to 0
+    # Welcome Message
     print("Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
 
-    
-
     # Creates the player
     player = Player(x=SCREEN_WIDTH / 2, y=SCREEN_HEIGHT / 2)
 
-    running = True                                                  # A loop used to enter, run, and exit the game
+    running = True                                          # A loop used to enter, run, and exit the game
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-            
         screen.fill((0, 0, 0))                              # Fills the screen with black
-
-        updatable.update(dt)                                # Calls the updatable objects, enables player rotation, must initialize prior the drawing the character
+        updatable.update(dt)                                # Calls the updatable objects, enables player rotation,
+                                                            # must initialize prior the drawing the character
 
         for asteroid in asteroids:                          # Checks for collisions between player and asteroids
             if player.collisions(asteroid):                 # Calls the collisions method in the CircleShape class
