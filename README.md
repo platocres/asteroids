@@ -5,8 +5,8 @@ In order to run this game successfully, you will need to have Python3 and PyGame
 
 Controls:
 
-W = Up
-S = Down
-A = Rotate Left
-D = Rotate Right
-Spacebar = Shoot
+- W = Up
+- S = Down
+- A = Rotate Left
+- D = Rotate Right
+- Spacebar = Shoot
